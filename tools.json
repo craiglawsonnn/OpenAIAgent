@@ -1,0 +1,100 @@
+[
+    {
+      "type": "function",
+      "function": {
+        "name": "get_order_status",
+        "description": "Check the status of a customer's order by order ID.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "order_id": {
+              "type": "string",
+              "description": "The customer's order ID"
+            }
+          },
+          "required": ["order_id"]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "initiate_return",
+        "description": "Start a return process for an order.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "order_id": {
+              "type": "string",
+              "description": "The customer's order ID"
+            },
+            "reason": {
+              "type": "string",
+              "description": "Reason for the return"
+            }
+          },
+          "required": ["order_id", "reason"]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "check_refund_status",
+        "description": "Get the status of a refund.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "refund_id": {
+              "type": "string",
+              "description": "The refund ID from the customer"
+            }
+          },
+          "required": ["refund_id"]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "track_shipment",
+        "description": "Get shipping tracking info using a tracking number.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "tracking_number": {
+              "type": "string",
+              "description": "The shipment tracking number"
+            }
+          },
+          "required": ["tracking_number"]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "update_account_info",
+        "description": "Update customer's contact details like phone or email.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "customer_id": {
+              "type": "string",
+              "description": "Customer's unique ID"
+            },
+            "email": {
+              "type": "string",
+              "description": "New email address"
+            },
+            "phone": {
+              "type": "string",
+              "description": "New phone number"
+            }
+          },
+          "required": ["customer_id"]
+        }
+      }
+    }
+  ]
+  

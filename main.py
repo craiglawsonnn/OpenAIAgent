@@ -3,71 +3,83 @@ import json
 from dotenv import load_dotenv
 from openai import OpenAI
 
-# Load API key from .env
+# Load environment variables
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-# System and user messages
-messages = [
-    {"role": "system", "content": "You are a helpful weather assistant."},
-    {"role": "user", "content": "What's the weather like in Paris?"}
-]
+# Load tool definitions from tools.json
+with open("tools.json", "r") as f:
+    tools = json.load(f)
 
-# Define the tool (function)
-tools = [
+# Ask the user for input
+user_input = input("You: ")
+
+# Initial message list
+messages = [
     {
-        "type": "function",
-        "function": {
-            "name": "get_weather",
-            "description": "Get the weather for a city.",
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "city": {
-                        "type": "string",
-                        "description": "The city to get weather for"
-                    }
-                },
-                "required": ["city"]
-            }
-        }
+        "role": "system",
+        "content": (
+            "You are a friendly customer service chatbot for an online store. "
+            "Assist users with order issues, returns, refunds, tracking, and account updates. "
+            "Use the tools provided to perform tasks when needed."
+        )
+    },
+    {
+        "role": "user",
+        "content": user_input
     }
 ]
 
-# Step 1: Let the model choose the tool
+# Step 1: Get initial response and tool call (if needed)
 response = client.chat.completions.create(
-    model="gpt-3.5-turbo",  # You can also use "gpt-4o" if needed
+    model="gpt-3.5-turbo-1106",
     messages=messages,
     tools=tools,
     tool_choice="auto"
 )
 
-# Step 2: Extract tool call
 tool_calls = response.choices[0].message.tool_calls
+
+# Step 2: Handle tool call if it exists
 if tool_calls:
     tool_call = tool_calls[0]
-    tool_args = json.loads(tool_call.function.arguments)
-    city = tool_args["city"]
+    tool_name = tool_call.function.name
+    args = json.loads(tool_call.function.arguments)
 
-    # Simulated tool result
-    tool_result = f"The weather in {city} is sunny and 22°C."
+    # Simulated tool behavior
+    def simulate_tool(name, args):
+        if name == "get_order_status":
+            return f"Order {args['order_id']} is on the way! Estimated delivery: June 6."
+        elif name == "initiate_return":
+            return f"A return has been initiated for order {args['order_id']} due to: '{args['reason']}'."
+        elif name == "check_refund_status":
+            return f"Refund {args['refund_id']} has been processed and should appear in your account within 3–5 days."
+        elif name == "track_shipment":
+            return f"Tracking number {args['tracking_number']} shows the package is in transit and expected tomorrow."
+        elif name == "update_account_info":
+            return f"Account info updated for customer {args['customer_id']} with new email/phone if provided."
+        else:
+            return f"(Simulated) Unknown tool: {name}"
+
+    tool_result = simulate_tool(tool_name, args)
 
     # Step 3: Send tool result back to model
     followup = client.chat.completions.create(
-        model="gpt-3.5-turbo",  # Use the same model or a different one (this one is cheaper)
+        model="gpt-3.5-turbo-1106",
         messages=[
             *messages,
             response.choices[0].message,
             {
                 "role": "tool",
                 "tool_call_id": tool_call.id,
-                "name": "get_weather",
+                "name": tool_name,
                 "content": tool_result
             }
         ]
     )
 
-    print("Assistant:", followup.choices[0].message.content)
+    print("Bot:", followup.choices[0].message.content)
+
 else:
-    # If no tool call was made
-    print("Assistant:", response.choices[0].message.content)
+    # No tool used, just reply
+    print("Bot:", response.choices[0].message.content)
