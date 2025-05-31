@@ -3,6 +3,10 @@ import os
 import json
 from dotenv import load_dotenv
 from openai import OpenAI
+import sqlite3
+from db import init_db
+init_db()
+
 
 chat_sessions = {}  # temporary memory keyed by IP or static ID
 
@@ -17,7 +21,22 @@ with open("tools.json", "r") as f:
 # Simulated tool behavior
 def simulate_tool(name, args):
     if name == "get_order_status":
-        return f"Order {args['order_id']} is on the way! Estimated delivery: June 6."
+        conn = sqlite3.connect("support.db")
+        cur = conn.cursor()
+        cur.execute("SELECT status, delivery_date FROM orders WHERE id = ?", (args['order_id'],))
+        row = cur.fetchone()
+        conn.close()
+
+        if row:
+            return (
+                f"Order {args['order_id']} is currently in the {row[0]} stage "
+                f"and is estimated to be delivered on {row[1]}. If you have any further questions or need assistance, feel free to ask!"
+            )
+        else:
+            return (
+                f"I'm sorry, I couldn't find an order with ID {args['order_id']}. "
+                f"Please double-check the number or contact a support agent for more help."
+            )
     elif name == "initiate_return":
         return f"A return has been initiated for order {args['order_id']} due to: '{args['reason']}'."
     elif name == "check_refund_status":
