@@ -29,8 +29,8 @@ A full-stack AI chatbot system that simulates a production-ready customer suppor
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/your-username/customer-support-ai.git
-cd customer-support-ai
+git clone https://github.com/craiglawsonnn/OpenAIAgent.git
+cd OpenAIAgent
 ```
 
 2. **Create a virtual environment**
