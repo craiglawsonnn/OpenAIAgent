@@ -1,10 +1,10 @@
-# 🤖 AI-Powered Customer Service Chatbot
+# AI-Powered Customer Service Chatbot
 
 A full-stack AI chatbot system that simulates a production-ready customer support agent using OpenAI, Flask, JavaScript, and SQLite. This project features natural conversation flow, function calling, memory summarization, database interaction, and a responsive chat UI.
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 - **Backend:** Python, Flask, OpenAI API (function calling)
 - **Frontend:** HTML, CSS, JavaScript (vanilla)
@@ -13,7 +13,7 @@ A full-stack AI chatbot system that simulates a production-ready customer suppor
 
 ---
 
-## 🎯 Features
+## Features
 
 ✅ Message-based chatbot interface  
 ✅ Function calling with real-time tool simulation  
@@ -25,7 +25,7 @@ A full-stack AI chatbot system that simulates a production-ready customer suppor
 
 ---
 
-## 🚀 Setup Instructions
+## Setup Instructions
 
 1. **Clone the repository**
 ```bash
@@ -66,7 +66,7 @@ Go to `http://127.0.0.1:5000/` in your browser.
 
 ---
 
-## 📦 Project Structure
+## Project Structure
 
 ```
 ├── app.py               # Flask backend
@@ -82,7 +82,7 @@ Go to `http://127.0.0.1:5000/` in your browser.
 
 ---
 
-## 🧠 Memory Optimization
+## Memory Optimization
 
 To avoid expensive token inflation, this chatbot:
 - Tracks message history for each session
@@ -92,7 +92,7 @@ To avoid expensive token inflation, this chatbot:
 
 ---
 
-## 💬 Sample Queries
+## Sample Queries
 
 Try asking:
 - `What's the status of order 5672?`
@@ -102,38 +102,39 @@ Try asking:
 
 ---
 
-## 🧪 Future Improvements
+## Future Improvements
 
-- 🔐 User authentication + session persistence
-- 📊 Dashboard to view sessions/summaries
-- ☁️ Switch to PostgreSQL or MongoDB
-- 💡 Add natural language analytics & tagging
-- 🛜 WebSocket or streaming response support
-- 🌍 Multi-language translation support
-
----
-
-## 📸 Screenshots
-
-> _(Add screenshots of your chat interface here!)_
+-  User authentication + session persistence
+-  Dashboard to view sessions/summaries
+-  Switch to PostgreSQL or MongoDB
+-  Add natural language analytics & tagging
+-  WebSocket or streaming response support
+-  Multi-language translation support
 
 ---
 
-## 📄 License
+## Screenshots
+
+
+![image](https://github.com/user-attachments/assets/5a4a504a-5903-4fff-a09f-60f48c3e841f)
+
+---
+
+## License
 
 MIT License — free to use, modify, and share.
 
 ---
 
-## ✨ Author
+##  Author
 
 **Craig Lawson**  
-👨‍💻 Developer | 🧠 Systems Thinker | 📍 Based in Ireland  
-Feel free to [connect on LinkedIn](https://www.linkedin.com/in/your-profile) or [drop a message](mailto:your@email.com)!
+ Developer |  Systems Thinker |  Based in Ireland  
+Feel free to [connect on LinkedIn](https://www.linkedin.com/in/craig-law-son) or [drop a message](mailto:craig.lawson89@gmail.com)!
 
 ---
 
-## ❤️ Acknowledgements
+## Acknowledgements
 
 - [OpenAI](https://platform.openai.com)
 - Everyone building transparent, helpful AI tools
