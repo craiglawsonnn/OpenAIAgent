@@ -4,26 +4,135 @@
   <meta charset="UTF-8">
   <title>Customer Service Chatbot</title>
   <style>
-    body { font-family: sans-serif; max-width: 600px; margin: 2rem auto; }
-    #chat { white-space: pre-wrap; border: 1px solid #ccc; padding: 1rem; height: 300px; overflow-y: auto; margin-bottom: 1rem; }
-    input { width: 100%; padding: 0.5rem; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    h1 {
+      text-align: center;
+      padding: 1rem;
+      margin: 0;
+      background-color: #0066cc;
+      color: white;
+    }
+
+    #chat {
+      flex: 1;
+      padding: 1rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      background-color: white;
+    }
+
+    .bubble {
+      max-width: 70%;
+      padding: 0.75rem;
+      border-radius: 1rem;
+      line-height: 1.4;
+      white-space: pre-wrap;
+    }
+
+    .user {
+      align-self: flex-end;
+      background-color: #d1e7ff;
+      color: #000;
+      border-bottom-right-radius: 0;
+    }
+
+    .bot {
+      align-self: flex-start;
+      background-color: #eee;
+      color: #333;
+      border-bottom-left-radius: 0;
+    }
+
+    #inputContainer {
+      display: flex;
+      padding: 1rem;
+      background-color: #f0f0f0;
+      border-top: 1px solid #ccc;
+    }
+
+    #userInput {
+      flex: 1;
+      padding: 0.75rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 1rem;
+    }
+    @keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.bubble {
+  animation: fadeInUp 0.4s ease-out;
+  transition: background-color 0.3s;
+}
+.bubble:hover {
+  background-color: #cbe7ff;
+}
+
   </style>
 </head>
 <body>
   <h1>Customer Support</h1>
   <div id="chat"></div>
-  <input type="text" id="userInput" placeholder="Type your message..." autofocus>
+  <div id="inputContainer">
+    <input type="text" id="userInput" placeholder="Type your message..." autocomplete="off">
+  </div>
 
   <script>
     const chatDiv = document.getElementById('chat');
     const input = document.getElementById('userInput');
+
+    function addMessage(content, sender) {
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble ' + sender;
+
+    if (sender === 'bot') {
+      let index = 0;
+      const typingSpeed = 5; // lower is faster
+
+      function typeChar() {
+        if (index < content.length) {
+          bubble.textContent += content.charAt(index);
+          index++;
+          setTimeout(typeChar, typingSpeed);
+          chatDiv.scrollTop = chatDiv.scrollHeight;
+        }
+      }
+
+      chatDiv.appendChild(bubble);
+      typeChar();
+    } else {
+      bubble.textContent = content;
+      chatDiv.appendChild(bubble);
+      chatDiv.scrollTop = chatDiv.scrollHeight;
+    }
+  }
+
 
     input.addEventListener('keypress', function(e) {
       if (e.key === 'Enter') {
         const message = input.value.trim();
         if (!message) return;
 
-        chatDiv.innerHTML += `You: ${message}\n`;
+        addMessage(message, 'user');
         input.value = '';
 
         fetch('/chat', {
@@ -33,8 +142,7 @@
         })
         .then(res => res.json())
         .then(data => {
-          chatDiv.innerHTML += `Bot: ${data.reply}\n\n`;
-          chatDiv.scrollTop = chatDiv.scrollHeight;
+          addMessage(data.reply, 'bot');
         });
       }
     });
