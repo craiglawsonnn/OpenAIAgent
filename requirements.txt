@@ -1,0 +1,3 @@
+openai
+openai-agents
+python-dotenv  # for keeping your API key safe in .env
